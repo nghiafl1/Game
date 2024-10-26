@@ -31,7 +31,7 @@ public class Enemy1 : MonoBehaviour
 
     void MoveTowardsPlayer()
     {
-    
+        if(player == null) return;
         float distance = Vector2.Distance(transform.position, player.transform.position);
 
         if (distance > stopDistance)

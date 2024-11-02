@@ -9,6 +9,7 @@ public class PlayerHealth : MonoBehaviour
     int currentHealth;
     public HealthBAr healthBar;
     public UnityEvent OnDeath;
+    Player player;
     private void OnEnable()
     {
         OnDeath.AddListener(Death);
@@ -21,6 +22,7 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
         healthBar.UpdateBar(currentHealth, maxHealth);
+        player = GetComponent<Player>();
     }
     public void takeDamage(int damage)
     {
@@ -38,9 +40,7 @@ public class PlayerHealth : MonoBehaviour
     }
     private void Update()
     {
-        /*if (Input.GetKeyDown(KeyCode.Space))
-        {
-            takeDamage(20);
-        }*/
+        takeDamage(player.DamageEnemy);
+        player.DamageEnemy = 0;
     }
 }

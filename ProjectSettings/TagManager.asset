@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - bullet
+  - BulletEnemy
   layers:
   - Default
   - TransparentFX
@@ -12,7 +13,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - EnemyLayer
   - 
   - 
   - 
@@ -41,4 +42,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: New Layer 1
+    uniqueID: 2945067797
     locked: 0

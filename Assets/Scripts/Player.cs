@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     public float SpeedFire = 1f;
     public float BulletForce;
     private float speedFire;
+    public int DamageEnemy;
     void Start()
     {
         Rb = GetComponent<Rigidbody2D>();
@@ -47,17 +48,27 @@ public class Player : MonoBehaviour
     void FireBullet()
     {
         speedFire = SpeedFire;
-        if (IsFacingRight == true)
-        {           
-            GameObject bullet = Instantiate(Bullet, FirePos.position, Quaternion.identity);
-            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-            rb.AddForce(transform.right * BulletForce, ForceMode2D.Impulse);
+        GameObject bullet;
+        Rigidbody2D rb;
+
+        if (IsFacingRight)
+        {
+            bullet = Instantiate(Bullet, FirePos.position, Quaternion.identity);
+            rb = bullet.GetComponent<Rigidbody2D>();
+            rb.velocity = transform.right * BulletForce;
         }
         else
-        { 
-            GameObject bullet = Instantiate(Bullet2, FirePos.position, Quaternion.identity);
-            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-            rb.AddForce(-transform.right * BulletForce, ForceMode2D.Impulse);
+        {
+            bullet = Instantiate(Bullet2, FirePos.position, Quaternion.identity);
+            rb = bullet.GetComponent<Rigidbody2D>();
+            rb.velocity = -transform.right * BulletForce;
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("BulletEnemy"))
+        {
+            DamageEnemy = Random.Range(2, 5);
         }
     }
 }

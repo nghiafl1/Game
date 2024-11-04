@@ -7,7 +7,6 @@ public class EnemyController : MonoBehaviour
 {
     public GameObject damPopUp; // Prefab cho popup damage
     private float hp = 100;     // Máu của kẻ địch
-
     // Hàm để tạo hiệu ứng khi nhận damage
     public void TakeDamEffect(int damage)
     {
@@ -38,7 +37,7 @@ public class EnemyController : MonoBehaviour
         if (collision.CompareTag("bullet"))
         {
             // Tạo giá trị damage ngẫu nhiên
-            int damage = Random.Range(1, 20);
+            int damage = Random.Range(5, 20);
 
             // Trừ máu kẻ địch
             hp -= damage;
@@ -57,6 +56,7 @@ public class EnemyController : MonoBehaviour
         if (hp <= 0)
         {
             Destroy(gameObject); // Hủy đối tượng nếu HP <= 0
+            SwitchScene.sc++;
         }
     }
 }

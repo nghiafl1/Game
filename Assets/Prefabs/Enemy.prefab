@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5895630495122560610}
   m_Layer: 6
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -157,6 +157,8 @@ MonoBehaviour:
   stopDistance: 5
   bulletSpeed: 5
   fireRate: 2
+  separationDistance: 2
+  avoidanceForce: 5
   maxWaitTime: 3
 --- !u!61 &6170389847345838368
 BoxCollider2D:

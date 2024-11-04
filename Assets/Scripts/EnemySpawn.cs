@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class EnemySpawn : MonoBehaviour
 {
-    public GameObject enemyPrefab;  // Prefab của enemy
+    public GameObject enemyPrefab1;  // Prefab của enemy 1
+    public GameObject enemyPrefab2;  // Prefab của enemy 2
     public Transform spawnPoint;    // Vị trí spawn
-    public float spawnInterval = 2f; // Khoảng thời gian giữa các lần spawn
+    public float spawnInterval = 5f; // Khoảng thời gian giữa các lần spawn
 
     private void Start()
     {
@@ -18,13 +19,21 @@ public class EnemySpawn : MonoBehaviour
     {
         while (true)
         {
-            SpawnEnemy();  // Gọi hàm tạo enemy
+            int tmp = Random.Range(1, 3);
+            SpawnEnemy(tmp);  // Gọi hàm tạo enemy
             yield return new WaitForSeconds(spawnInterval); // Chờ 2 giây
         }
     }
 
-    private void SpawnEnemy()
+    private void SpawnEnemy(int cnt)
     {
-        Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
+        if(cnt == 1)
+        {
+            Instantiate(enemyPrefab1, spawnPoint.position, Quaternion.identity);
+        }
+        else
+        {
+            Instantiate(enemyPrefab2, spawnPoint.position, Quaternion.identity);
+        }
     }
 }

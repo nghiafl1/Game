@@ -7,7 +7,7 @@ public class EnemySpawn : MonoBehaviour
     public GameObject enemyPrefab1;  // Prefab của enemy 1
     public GameObject enemyPrefab2;  // Prefab của enemy 2
     public Transform spawnPoint;    // Vị trí spawn
-    public float spawnInterval = 5f; // Khoảng thời gian giữa các lần spawn
+    float spawnInterval; // Khoảng thời gian giữa các lần spawn
 
     private void Start()
     {
@@ -21,7 +21,8 @@ public class EnemySpawn : MonoBehaviour
         {
             int tmp = Random.Range(1, 3);
             SpawnEnemy(tmp);  // Gọi hàm tạo enemy
-            yield return new WaitForSeconds(spawnInterval); // Chờ 2 giây
+            spawnInterval = Random.Range(3, 5);
+            yield return new WaitForSeconds(spawnInterval);
         }
     }
 

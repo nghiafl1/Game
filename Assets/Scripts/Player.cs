@@ -57,6 +57,7 @@ public class Player : MonoBehaviour
     void SetPlayerPosition()
     {
         transform.position = vtplayer;
+        Flip2();
     }
 
     void Flip()
@@ -69,7 +70,16 @@ public class Player : MonoBehaviour
             transform.localScale = Kich_thuoc;
         }
     }
-
+    void Flip2()
+    {
+        if (IsFacingRight == false)
+        {
+            IsFacingRight = !IsFacingRight;
+            Vector3 Kich_thuoc = transform.localScale;
+            Kich_thuoc.x *= -1;
+            transform.localScale = Kich_thuoc;
+        }
+    }
     void FireBullet()
     {
         speedFire = SpeedFire;

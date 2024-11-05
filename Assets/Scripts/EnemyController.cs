@@ -37,7 +37,7 @@ public class EnemyController : MonoBehaviour
         if (collision.CompareTag("bullet"))
         {
             // Tạo giá trị damage ngẫu nhiên
-            int damage = Random.Range(5, 20);
+            int damage = Random.Range(10, 21);
 
             // Trừ máu kẻ địch
             hp -= damage;

@@ -19,7 +19,7 @@ public class SwitchScene : MonoBehaviour
 
     private void Update()
     {
-        if (sc == 1 && !isSwitching)
+        if (sc == 10 && !isSwitching)
         {
             StartCoroutine(FadeAndSwitchScene("Scene2"));
             isSwitching = true; // Đánh dấu rằng quá trình chuyển cảnh đã bắt đầu

@@ -104,7 +104,11 @@ public class Player : MonoBehaviour
     {
         if (collision.CompareTag("BulletEnemy"))
         {
-            DamageEnemy = Random.Range(2, 3);
+            DamageEnemy = Random.Range(2, 4);
+        }
+        else if (collision.CompareTag("BulletEnemy2"))
+        {
+            DamageEnemy = 1;
         }
     }
 }

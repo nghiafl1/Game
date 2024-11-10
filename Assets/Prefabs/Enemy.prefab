@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 7087878300831262277}
   - component: {fileID: 2179360722908699635}
   - component: {fileID: 6170389847345838368}
-  - component: {fileID: 5895630495122560610}
   m_Layer: 6
   m_Name: Enemy
   m_TagString: Enemy
@@ -153,13 +152,13 @@ MonoBehaviour:
   player: {fileID: 4938208013343581609, guid: 46a1d7a3e2c6d474d92dcad532b9b32b, type: 3}
   bulletPrefab: {fileID: 2733020133464577329, guid: 0912c02c804e09746919ce6c17783afb, type: 3}
   firePoint: {fileID: 1081665307140657866}
+  damPopUp: {fileID: 3890343362428162250, guid: f19b154a405b7214daae5592591ad33e, type: 3}
   speed: 2
   stopDistance: 5
   bulletSpeed: 5
   fireRate: 2
-  separationDistance: 2
-  avoidanceForce: 5
   maxWaitTime: 3
+  hp: 100
 --- !u!61 &6170389847345838368
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -205,19 +204,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.32748252, y: 0.6652543}
   m_EdgeRadius: 0
---- !u!114 &5895630495122560610
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2071790547842125177}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc0fafbf75126714a9e8fa94c8c7ebe6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damPopUp: {fileID: 3890343362428162250, guid: f19b154a405b7214daae5592591ad33e, type: 3}
 --- !u!1 &4910567243938212746
 GameObject:
   m_ObjectHideFlags: 0

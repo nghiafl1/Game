@@ -302,7 +302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeImage: {fileID: 249823146}
-  fadeDuration: 3
+  fadeDuration: 2
 --- !u!114 &34761595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1585,7 +1585,6 @@ MonoBehaviour:
   enemyPrefab1: {fileID: 2071790547842125177, guid: 52a03d38a06b5cf408003cc8eb2a8dd2, type: 3}
   enemyPrefab2: {fileID: 2894299745887911047, guid: dbedab89a927e0145bb99cc68ac93962, type: 3}
   spawnPoint: {fileID: 304962387}
-  spawnInterval: 5
 --- !u!4 &1706624117
 Transform:
   m_ObjectHideFlags: 0
@@ -1813,6 +1812,10 @@ PrefabInstance:
     - target: {fileID: 4938208013343581609, guid: 46a1d7a3e2c6d474d92dcad532b9b32b, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7879244376640101597, guid: 46a1d7a3e2c6d474d92dcad532b9b32b, type: 3}
+      propertyPath: BulletForce
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

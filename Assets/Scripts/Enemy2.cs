@@ -1,17 +1,27 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Enemy2 : MonoBehaviour
 {
     public GameObject player;
+    public GameObject bulletPrefab;
+    public Transform firePoint;
+    public GameObject damPopUp; // Prefab cho popup damage
+
     public float speed = 2f;
-    public float minStopDistance = 1f;  // Khoảng cách dừng nhỏ nhất
-    public float maxStopDistance = 10f;  // Khoảng cách dừng lớn nhất
-    private float stopDistance;  // Khoảng cách dừng ngẫu nhiên
+    public float stopDistance;
+    public float bulletSpeed = 5f;
+    public float fireRate = 2f;
+    public float maxWaitTime = 1.5f; // Thời gian chờ giữa các lần bắn
+    public float hp = 100f; // Máu của enemy
 
     private Animator animator;
     private bool isMoving = false;
+    private float nextFireTime = 0f;
+    private float waitTime = 0f;
+    private bool isShooting = false; // Kiểm tra xem enemy có đang bắn không
+    private bool isDead = false; // Kiểm tra trạng thái chết của enemy
 
     void Start()
     {
@@ -22,14 +32,33 @@ public class Enemy2 : MonoBehaviour
         }
 
         animator = GetComponent<Animator>();
-
-        // Gán một khoảng cách ngẫu nhiên từ minStopDistance đến maxStopDistance
-        stopDistance = Random.Range(minStopDistance, maxStopDistance);
+        stopDistance = Random.Range(5f, 10f);
     }
 
     void Update()
     {
+        if (isDead) return; // Ngăn mọi hành động nếu enemy đã chết
+
         MoveTowardsPlayer();
+
+        if (!isMoving)
+        {
+            waitTime += Time.deltaTime;
+            if (waitTime >= maxWaitTime && Time.time >= nextFireTime && !isShooting)
+            {
+                StartCoroutine(BlinkAndShoot());
+            }
+        }
+        else
+        {
+            waitTime = 0f;
+        }
+
+        if (hp <= 0 && !isDead)
+        {
+            Die();
+            SwitchScene.sc++;
+        }
     }
 
     void MoveTowardsPlayer()
@@ -66,5 +95,72 @@ public class Enemy2 : MonoBehaviour
             scale.x *= -1;
             transform.localScale = scale;
         }
+    }
+
+    private IEnumerator BlinkAndShoot()
+    {
+        isShooting = true;
+        animator.SetTrigger("EnemyShooting");
+
+        yield return new WaitForSeconds(0.9f);
+
+        Shoot();
+
+        nextFireTime = Time.time + maxWaitTime;
+        waitTime = 0f;
+        isShooting = false;
+    }
+
+    void Shoot()
+    {
+        if (player == null || bulletPrefab == null || firePoint == null || isDead) return;
+
+        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        Vector2 direction = (player.transform.position - firePoint.position).normalized;
+        rb.velocity = direction * bulletSpeed;
+    }
+
+    public void TakeDamEffect(int damage)
+    {
+        if (isDead || damPopUp == null) return;
+
+        GameObject instance = Instantiate(damPopUp, transform.position
+            + new Vector3(Random.Range(-0.3f, 0.3f), 0.5f, 0), Quaternion.identity);
+
+        var textMesh = instance.GetComponentInChildren<TextMeshProUGUI>();
+        if (textMesh != null)
+            textMesh.text = damage.ToString();
+
+        var popupAnimator = instance.GetComponentInChildren<Animator>();
+        if (popupAnimator != null)
+        {
+            if (damage <= 10) popupAnimator.Play("normal");
+            else popupAnimator.Play("critical");
+        }
+
+        hp -= damage;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("bullet") && !isDead)
+        {
+            int damage = Random.Range(10, 21);
+            TakeDamEffect(damage);
+            Destroy(collision.gameObject);
+        }
+    }
+
+    private void Die()
+    {
+        isDead = true;
+        animator.SetTrigger("Die");
+        Invoke("DestroyEnemy", 1f); // Điều chỉnh thời gian theo thời lượng animation chết
+    }
+
+    private void DestroyEnemy()
+    {
+        Destroy(gameObject);
     }
 }

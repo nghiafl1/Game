@@ -4,41 +4,64 @@ using UnityEngine;
 
 public class EnemySpawn : MonoBehaviour
 {
-    public GameObject enemyPrefab1; // Prefab của enemy 1
-    public GameObject enemyPrefab2; // Prefab của enemy 2
-    public Transform spawnPoint;    // Vị trí spawn
-    private float spawnInterval;    // Khoảng thời gian giữa các lần spawn
-    private int layerOrderCounter = 0; // Biến đếm để tăng dần Order in Layer
+    public GameObject enemyPrefab1;
+    public GameObject enemyPrefab2;
+    public Transform spawnPoint;
+    private float spawnInterval;
+    private int layerOrderCounter = 5;
     private int cntEnemy = 0;
-    private const int maxLayerOrder = 100; // Giới hạn tối đa cho Order in Layer
+    private const int maxLayerOrder = 100;
+    public float minDistanceBetweenEnemies = 2f; // Khoảng cách tối thiểu giữa các enemy
+
+    private List<GameObject> spawnedEnemies = new List<GameObject>(); // Danh sách các enemy đã spawn
 
     private void Start()
     {
         StartCoroutine(SpawnEnemyCoroutine());
     }
 
-    // Coroutine để spawn enemy sau mỗi khoảng thời gian
     IEnumerator SpawnEnemyCoroutine()
     {
         while (true)
         {
             cntEnemy++;
             int tmp = Random.Range(1, 3);
-            SpawnEnemy(tmp);  // Gọi hàm tạo enemy
+            SpawnEnemy(tmp);
             spawnInterval = Random.Range(3, 6);
             yield return new WaitForSeconds(spawnInterval);
-            if (cntEnemy == 15) yield break;
+            if (cntEnemy == 7) yield break;
         }
     }
 
     private void SpawnEnemy(int cnt)
     {
         GameObject newEnemy;
+        Vector3 spawnPosition;
+        bool validPosition = false;
 
-        // Thêm vị trí spawn ngẫu nhiên để tránh chồng lấn
-        Vector3 randomOffset = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
-        Vector3 spawnPosition = spawnPoint.position + randomOffset;
+        // Lặp lại cho đến khi tìm được vị trí hợp lệ
+        do
+        {
+            float randomX = 0.62f;
+            float randomY = Random.Range(-3f, 0.16f);
+            spawnPosition = new Vector3(randomX, randomY, 0);
 
+            // Kiểm tra khoảng cách với các enemy đã spawn
+            validPosition = true;
+            foreach (var enemy in spawnedEnemies)
+            {
+                // Kiểm tra nếu enemy đã bị phá hủy
+                if (enemy == null) continue;
+
+                if (Vector3.Distance(spawnPosition, enemy.transform.position) < minDistanceBetweenEnemies)
+                {
+                    validPosition = false;
+                    break;
+                }
+            }
+        } while (!validPosition);
+
+        // Tạo enemy tại vị trí hợp lệ
         if (cnt == 1)
         {
             newEnemy = Instantiate(enemyPrefab1, spawnPosition, Quaternion.identity);
@@ -53,7 +76,11 @@ public class EnemySpawn : MonoBehaviour
         if (spriteRenderer != null)
         {
             spriteRenderer.sortingOrder = layerOrderCounter;
-            layerOrderCounter = (layerOrderCounter + 1) % maxLayerOrder; // Reset khi đạt maxLayerOrder
+            layerOrderCounter = (layerOrderCounter + 1) % maxLayerOrder;
         }
+
+        // Thêm enemy vào danh sách để kiểm tra vị trí cho các lần spawn sau
+        spawnedEnemies.Add(newEnemy);
     }
+
 }

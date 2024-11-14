@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2817754905484309193}
   - component: {fileID: 7087878300831262277}
   - component: {fileID: 2179360722908699635}
-  - component: {fileID: 6170389847345838368}
+  - component: {fileID: 2373868800139727186}
   m_Layer: 6
   m_Name: Enemy
   m_TagString: Enemy
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: d4d222d677dc60a4485b7d7e3e564291, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0bc32b04ea245734b9f935a5fb4301a4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -125,7 +125,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -154,13 +154,12 @@ MonoBehaviour:
   firePoint: {fileID: 1081665307140657866}
   damPopUp: {fileID: 3890343362428162250, guid: f19b154a405b7214daae5592591ad33e, type: 3}
   speed: 2
-  stopDistance: 5
   bulletSpeed: 5
   fireRate: 2
   maxWaitTime: 3
   hp: 100
---- !u!61 &6170389847345838368
-BoxCollider2D:
+--- !u!60 &2373868800139727186
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -191,7 +190,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.070932, y: -0.34115002}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -201,9 +200,26 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.32748252, y: 0.6652543}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.099999994, y: -0.48}
+      - {x: 0.25, y: -0.45999998}
+      - {x: 0.26999998, y: -0.44}
+      - {x: 0.26999998, y: -0.39999998}
+      - {x: 0.25, y: -0.35}
+      - {x: 0.08, y: -0.22999999}
+      - {x: 0.04, y: -0.01}
+      - {x: -0.02, y: 0.01}
+      - {x: -0.11, y: 0.01}
+      - {x: -0.17, y: -0.07}
+      - {x: -0.22999999, y: -0.22999999}
+      - {x: -0.26999998, y: -0.52}
+      - {x: -0.26999998, y: -0.64}
+      - {x: -0.17, y: -0.64}
+      - {x: -0.17, y: -0.62}
+      - {x: -0.099999994, y: -0.64}
+      - {x: 0.089999996, y: -0.64}
+  m_UseDelaunayMesh: 0
 --- !u!1 &4910567243938212746
 GameObject:
   m_ObjectHideFlags: 0

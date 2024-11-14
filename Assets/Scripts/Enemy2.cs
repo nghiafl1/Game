@@ -7,21 +7,22 @@ public class Enemy2 : MonoBehaviour
     public GameObject player;
     public GameObject bulletPrefab;
     public Transform firePoint;
-    public GameObject damPopUp; // Prefab cho popup damage
+    public GameObject damPopUp;
 
     public float speed = 2f;
-    public float stopDistance;
     public float bulletSpeed = 5f;
     public float fireRate = 2f;
-    public float maxWaitTime = 1.5f; // Thời gian chờ giữa các lần bắn
-    public float hp = 100f; // Máu của enemy
+    public float maxWaitTime = 1.5f;
+    public float hp = 100f;
 
     private Animator animator;
     private bool isMoving = false;
     private float nextFireTime = 0f;
     private float waitTime = 0f;
-    private bool isShooting = false; // Kiểm tra xem enemy có đang bắn không
-    private bool isDead = false; // Kiểm tra trạng thái chết của enemy
+    private bool isShooting = false;
+    private bool isDead = false;
+
+    private Vector2 randomTargetPosition;
 
     void Start()
     {
@@ -32,52 +33,49 @@ public class Enemy2 : MonoBehaviour
         }
 
         animator = GetComponent<Animator>();
-        stopDistance = Random.Range(5f, 10f);
+        SetRandomTargetPosition();
     }
 
     void Update()
     {
-        if (isDead) return; // Ngăn mọi hành động nếu enemy đã chết
-
-        MoveTowardsPlayer();
-
-        if (!isMoving)
+        if (isDead) return;
+        Flip();
+        // Enemy di chuyển đến vị trí randomTargetPosition
+        if (Vector2.Distance(transform.position, randomTargetPosition) > 0.1f)
         {
+            MoveTowardsTarget();
+        }
+        else
+        {
+            // Dừng lại và thực hiện bắn khi đến vị trí
+            SetMoving(false);
             waitTime += Time.deltaTime;
             if (waitTime >= maxWaitTime && Time.time >= nextFireTime && !isShooting)
             {
                 StartCoroutine(BlinkAndShoot());
+                // Sau khi bắn, đặt lại thời gian chờ
+                waitTime = 0f;
             }
-        }
-        else
-        {
-            waitTime = 0f;
         }
 
         if (hp <= 0 && !isDead)
         {
             Die();
+            Spawm2.cntEnemy++;
             SwitchScene.sc++;
         }
     }
 
-    void MoveTowardsPlayer()
+    void SetRandomTargetPosition()
     {
-        if (player == null) return;
-        float distance = Vector2.Distance(transform.position, player.transform.position);
+        float randomX = Random.Range(-9.34f, -1.37f);
+        randomTargetPosition = new Vector2(randomX, transform.position.y);
+    }
 
-        if (distance > stopDistance)
-        {
-            Vector2 target = new Vector2(player.transform.position.x, transform.position.y);
-            transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
-            SetMoving(true);
-        }
-        else
-        {
-            SetMoving(false);
-        }
-
-        Flip();
+    void MoveTowardsTarget()
+    {
+        transform.position = Vector2.MoveTowards(transform.position, randomTargetPosition, speed * Time.deltaTime);
+        SetMoving(true);
     }
 
     void SetMoving(bool moving)
@@ -107,7 +105,6 @@ public class Enemy2 : MonoBehaviour
         Shoot();
 
         nextFireTime = Time.time + maxWaitTime;
-        waitTime = 0f;
         isShooting = false;
     }
 
@@ -117,7 +114,8 @@ public class Enemy2 : MonoBehaviour
 
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-        Vector2 direction = (player.transform.position - firePoint.position).normalized;
+
+        Vector2 direction = (player.transform.position.x > transform.position.x) ? Vector2.right : Vector2.left;
         rb.velocity = direction * bulletSpeed;
     }
 
@@ -146,7 +144,7 @@ public class Enemy2 : MonoBehaviour
     {
         if (collision.CompareTag("bullet") && !isDead)
         {
-            int damage = Random.Range(10, 21);
+            int damage = Random.Range(25, 26);
             TakeDamEffect(damage);
             Destroy(collision.gameObject);
         }
@@ -156,7 +154,7 @@ public class Enemy2 : MonoBehaviour
     {
         isDead = true;
         animator.SetTrigger("Die");
-        Invoke("DestroyEnemy", 1f); // Điều chỉnh thời gian theo thời lượng animation chết
+        Invoke("DestroyEnemy", 1f);
     }
 
     private void DestroyEnemy()

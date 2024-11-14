@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     public float Speed;
     private float Trai_phai;
+    private float Len_xuong; // Biến để lưu giá trị trục dọc
     private bool IsFacingRight = true;
     private Rigidbody2D Rb;
     private Animator animator;
@@ -24,7 +25,7 @@ public class Player : MonoBehaviour
         Rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
 
-        // Kiểm tra nếu đang ở Scene2, đặt player vào vị trí `vtplayer`
+        // Kiểm tra nếu đang ở Scene2, đặt player vào vị trí vtplayer
         if (SwitchScene.checkScene2)
         {
             SetPlayerPosition();
@@ -42,10 +43,13 @@ public class Player : MonoBehaviour
         }
 
         Trai_phai = Input.GetAxisRaw("Horizontal");
-        Rb.velocity = new Vector2(Trai_phai * Speed, Rb.velocity.y);
+        Len_xuong = Input.GetAxisRaw("Vertical"); // Lấy giá trị trục dọc
+
+        // Di chuyển theo cả hai trục
+        Rb.velocity = new Vector2(Trai_phai * Speed, Len_xuong * Speed);
 
         Flip();
-        animator.SetFloat("move", Mathf.Abs(Trai_phai));
+        animator.SetFloat("move", Mathf.Abs(Trai_phai) + Mathf.Abs(Len_xuong)); // Cập nhật animation khi di chuyển
 
         speedFire -= Time.deltaTime;
         if (Input.GetKeyDown(KeyCode.Space) && speedFire < 0)
@@ -70,6 +74,7 @@ public class Player : MonoBehaviour
             transform.localScale = Kich_thuoc;
         }
     }
+
     void Flip2()
     {
         if (IsFacingRight == false)
@@ -80,6 +85,7 @@ public class Player : MonoBehaviour
             transform.localScale = Kich_thuoc;
         }
     }
+
     void FireBullet()
     {
         speedFire = SpeedFire;
@@ -109,6 +115,14 @@ public class Player : MonoBehaviour
         else if (collision.CompareTag("BulletEnemy2"))
         {
             DamageEnemy = 1;
+        }
+        else if (collision.CompareTag("BulletEnemyTank"))
+        {
+            DamageEnemy = 15;
+        }
+        else if (collision.CompareTag("ChasingBullet"))
+        {
+            DamageEnemy = 7;
         }
     }
 }

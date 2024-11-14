@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BulletEnemy : MonoBehaviour
 {
-    public float maxDistance = 10f; // Khoảng cách tối đa viên đạn có thể bay
+    public float maxDistance = 12f; // Khoảng cách tối đa viên đạn có thể bay
     private Vector3 startPosition;  // Lưu vị trí ban đầu của viên đạn
 
     void Start()

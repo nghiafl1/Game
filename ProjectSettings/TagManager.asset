@@ -8,6 +8,9 @@ TagManager:
   - BulletEnemy
   - Enemy
   - BulletEnemy2
+  - BulletEnemyTank
+  - EnemyTank
+  - ChasingBullet
   layers:
   - Default
   - TransparentFX
